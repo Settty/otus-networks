@@ -12,11 +12,11 @@
 
 ###  Пример настройки на маршрутизаторе R1:
 
-Router#configure terminal
-Router(config)#hostname R1
-R1(config)#no ip domain-lookup
-R1(config)#enable password class
-R1(config)#line console 0
+ Router#configure terminal
+ Router(config)#hostname R1
+ R1(config)#no ip domain-lookup
+ R1(config)#enable password class
+ R1(config)#line console 0
 R1(config-line)#password cisco
 R1(config-line)#login 
 R1(config)#line vty 0 4
