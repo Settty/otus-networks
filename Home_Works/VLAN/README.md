@@ -12,7 +12,7 @@
 
 ###  Пример настройки на маршрутизаторе R1:
 
-Router#configure terminal
+-Router#configure terminal
 Router(config)#hostname R1
 R1(config)#no ip domain-lookup
 R1(config)#enable password class
