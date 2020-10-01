@@ -19,3 +19,9 @@
 
 ###  Конфигурация устройств согласно методичке:
 - [Конфигурационные файлы;](config/)
+
+###  Итоговый результат после настройки:
+* Ping from PC-A to its default gateway.
+* Ping from PC-A to PC-B
+* Ping from PC-A to S2
+
