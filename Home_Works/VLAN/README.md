@@ -26,5 +26,12 @@
 ![](Ping_from_PC-A_to_its_default_gateway.png)
 
 * Ping from PC-A to PC-B
+![](Ping_from_PC-A_to_PC-B.png)
+
 * Ping from PC-A to S2
+![](Ping_from_PC-A_to_S2.png)
+
+* Tracert_from_PC-A_to_PC-B
+![](Tracert_from_PC-A_to_PC-B.png)
+
 
