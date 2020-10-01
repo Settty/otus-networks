@@ -9,4 +9,4 @@
   5. Убедиться, что маршрутизация между VLAN работает
 
 ###  Схема топологии настраевоемой сети:
-![alt-текст]https://github.com/Settty/otus-networks/tree/master/Home_Works/Pictures/VLAN.png
+![alt-текст] https://github.com/Settty/otus-networks/tree/master/Home_Works/Pictures/VLAN.png
