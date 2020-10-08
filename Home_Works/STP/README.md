@@ -95,7 +95,6 @@
 
 ![](S1_after_Cos_18.png)
 
-
 ![](S3_after_Cos_18.png)
 
 ### Вопрос к Шаг 3
