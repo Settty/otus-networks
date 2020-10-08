@@ -29,5 +29,14 @@
 
 ![](S2_to_S3.png)
 
+# Часть 2
+### Шаг 1. Отключите все порыт на коммутаторах.  
+* (config)#interface range fa0/1-24
+* (config)#shutdown
+* (config)#interface range gi0/1-2
+* (config)#shutdown
+Данные команды вводятся аналогично на трех коммутаторах согласно схемы.
+
+
 
 
