@@ -1,0 +1,125 @@
+*Oct 16 15:19:11.501: %SYS-5-CONFIG_I: Configured from console by consolesh run
+Building configuration...
+
+Current configuration : 3215 bytes
+!
+! Last configuration change at 15:30:16 UTC Fri Oct 16 2020
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname S2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$KnSq$eW5/uq8LSRz0Wlu7bBbgs.
+!
+no aaa new-model
+!
+!
+!
+!         
+!         
+!         
+!         
+!         
+no ip domain-lookup
+ip cef    
+no ipv6 cef
+!         
+!         
+!         
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!         
+vlan internal allocation policy ascending
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface GigabitEthernet0/0
+ media-type rj45
+ negotiation auto
+!         
+interface GigabitEthernet0/1
+ media-type rj45
+ negotiation auto
+!         
+interface GigabitEthernet0/2
+ shutdown 
+ media-type rj45
+ negotiation auto
+!         
+interface GigabitEthernet0/3
+ shutdown 
+ media-type rj45
+ negotiation auto
+!         
+interface GigabitEthernet1/0
+ shutdown 
+ media-type rj45
+ negotiation auto
+!         
+interface GigabitEthernet1/1
+ shutdown 
+ media-type rj45
+ negotiation auto
+!         
+interface GigabitEthernet1/2
+ shutdown 
+ media-type rj45
+ negotiation auto
+!         
+interface GigabitEthernet1/3
+ shutdown 
+ media-type rj45
+ negotiation auto
+!         
+ip forward-protocol nd
+!         
+no ip http server
+no ip http secure-server
+!         
+!         
+!         
+!         
+!         
+!         
+control-plane
+!         
+banner motd ^C
+***********************************************
+*                                             *
+*                STOP!!!!                     *
+*                DANGER!!!                    *
+***********************************************
+^C  
+!         
+line con 0
+ password 7 0822455D0A16
+ login    
+line aux 0
+line vty 0 4
+ password 7 05080F1C2243
+ login    
+line vty 5 15
+ password 7 05080F1C2243
+ login    
+!         
+!         
+end 
