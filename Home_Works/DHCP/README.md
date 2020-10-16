@@ -47,3 +47,9 @@
     default-router 192.168.1.97
     dns-server 192.168.1.97
     domain-name ccna-lab.com
+    
+## Шаг 3 Verify the DHCPv4 Server configuration
+### a-c отражены в скриншотах ниже:
+![](sh_ip_dhcp_pool.png)
+
+![](sh_ip_dhcp_binding.png)
