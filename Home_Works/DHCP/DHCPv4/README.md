@@ -31,7 +31,7 @@
     ip dhcp excluded-address 192.168.1.97 192.168.1.101
     
     
- ### b-g отражены в конфигах ниже:
+ ### Пункты b-g отражены в конфигах ниже:
 Для сети A
  
     ip dhcp pool Clients
@@ -51,7 +51,7 @@
 ## Шаг 3 Verify the DHCPv4 Server configuration
 ### Пункты a-c отражены в скриншотах ниже:
 ![](sh_ip_dhcp_pool.png)
-
+******************************************
 ![](sh_ip_dhcp_binding.png)
 
 # Часть 3
