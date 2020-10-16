@@ -51,7 +51,7 @@
 ## Шаг 3 Verify the DHCPv4 Server configuration
 ### a-c отражены в скриншотах ниже:
 ![](sh_ip_dhcp_pool.png)
-
+***************************
 ![](sh_ip_dhcp_binding.png)
 
 ## Шаг 4
