@@ -53,3 +53,13 @@
 ![](sh_ip_dhcp_pool.png)
 
 ![](sh_ip_dhcp_binding.png)
+
+# Часть 3
+## Шаг 1
+Согласно инструкции задаем на маршрутизаторе R2 ip helper-address в настройках интерфейса Gi0/1 
+
+    interface GigabitEthernet0/1
+    ip address 192.168.1.97 255.255.255.240
+    ip helper-address 10.0.0.1
+    duplex auto
+    speed auto
