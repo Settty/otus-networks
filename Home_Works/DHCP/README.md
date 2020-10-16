@@ -29,3 +29,17 @@
 ### a. Exclude the first five useable addresses from each address pool.
     ip dhcp excluded-address 192.168.1.1 192.168.1.5
     ip dhcp excluded-address 192.168.1.97 192.168.1.101
+    
+    
+    
+    ip dhcp pool Clients
+    network 192.168.1.0 255.255.255.192
+    default-router 192.168.1.1
+    dns-server 192.168.1.1
+    domain-name ccna-lab.com
+    
+    ip dhcp pool R2_Client_LAN
+    network 192.168.1.96 255.255.255.240
+    default-router 192.168.1.97
+    dns-server 192.168.1.97
+    domain-name ccna-lab.com
