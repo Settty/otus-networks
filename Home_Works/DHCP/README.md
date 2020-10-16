@@ -63,3 +63,5 @@
     ip helper-address 10.0.0.1
     duplex auto
     speed auto
+    
+## Шаг 2    
