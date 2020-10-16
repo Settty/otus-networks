@@ -23,7 +23,7 @@
 
 ![](PC_B.png)
 
-* Скриншот Cisco PCT
+* Скриншот Cisco PCT для PC_A
 
 ![](CPT_A.png)
 
