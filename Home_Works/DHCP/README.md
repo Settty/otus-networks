@@ -25,13 +25,16 @@
       Ответ: Если имеется ввиду интерфейс коммутатора который смотрит в сторону маршрутизатора R2 то данный интерфейс остался в VLAN1 по причини того, что порт маршрутизатора, согласно методичке, настроен без использования инкапсуляции и коммутатору нет необходимости помечать трафик дополнительным тегом. По умолчанию трафик принадлжежащий VLAN1 (Native) выходит из интерфейса без дополнительного тега.
       
 # Часть 2
-## Шаг 1. Configure R1 with DHCPv4 pools for the two supported subnets. Only the DHCP Pool for subnet A is given below. 
+## Шаг 1. Configure R1 with DHCPv4 pools for the two supported subnets. 
 ### a. Exclude the first five useable addresses from each address pool.
     ip dhcp excluded-address 192.168.1.1 192.168.1.5
     ip dhcp excluded-address 192.168.1.97 192.168.1.101
     
     
-    
+ ### b-g отражены в конфигах ниже
+ 
+ * Для сети A
+ 
     ip dhcp pool Clients
     network 192.168.1.0 255.255.255.192
     default-router 192.168.1.1
