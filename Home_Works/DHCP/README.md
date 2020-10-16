@@ -31,16 +31,17 @@
     ip dhcp excluded-address 192.168.1.97 192.168.1.101
     
     
- ### b-g отражены в конфигах ниже
- 
- * Для сети A
+ ### b-g отражены в конфигах ниже:
+Для сети A
  
     ip dhcp pool Clients
     network 192.168.1.0 255.255.255.192
     default-router 192.168.1.1
     dns-server 192.168.1.1
     domain-name ccna-lab.com
-    
+   
+Для сети C 
+
     ip dhcp pool R2_Client_LAN
     network 192.168.1.96 255.255.255.240
     default-router 192.168.1.97
