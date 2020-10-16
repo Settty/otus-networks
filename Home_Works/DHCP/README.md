@@ -1,1 +1,2 @@
 - [DHCPv4](https://github.com/Settty/otus-networks/tree/master/Home_Works/DHCP/DHCPv4).
+- [DHCPv6](https://github.com/Settty/otus-networks/tree/master/Home_Works/DHCP/DHCPv6).
