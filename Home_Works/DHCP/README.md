@@ -54,7 +54,7 @@
 ***************************
 ![](sh_ip_dhcp_binding.png)
 
-## Шаг 4
+## Шаг 4 Attempt to acquire an IP address from DHCP on PC-A
 ### a-c отражены в скриншотах ниже:
 ![](ping_192.168.1.1.png)
 
