@@ -21,6 +21,8 @@
 | 10.10.10.4/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:2::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R17e0/2 R19e0/2 |
 | 10.10.10.8/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:3::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R18e0/2 R20e0/2 |
 | 10.10.10.12/30  | 10.10.10.0/24 | 20FF:CCFF:FFFF:4::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R19e0/1 R20e0/1 |
+
+| Network IPv4     | Summary net    | Network IPv6             | Summary net         | Description   | Eq&port         |
 | 10.10.20.0/30   | 90.90.128.0/22 | 20FF:CCFF:FFFF:5::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R17e0/3 R20e0/3 |
 | 10.10.20.4/30   | 90.90.128.0/22 | 20FF:CCFF:FFFF:6::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R18e0/3 R19e0/3 |
 | 10.10.20.8/30   | not used       | 20FF:CCFF:1000:17::/64   | not used            | to Internet   | R5e0/0  R17e0/0 |
@@ -31,6 +33,8 @@
 | 10.10.20.28/30    | 50.50.96.0/21  | 20FF:CCFF:200A:A2::/64   | 20FF:CCFF:200A::/48 | Трум-пум      | R11e0/0 R12e0/0 |
 | 10.10.20.32/30   | 50.50.96.0/21  | 20FF:CCFF:200A:A3::/64   | 20FF:CCFF:200A::/48 | Трум-пум      | R9e0/2  R10e0/2 |
 | 10.10.20.36/30   | 50.50.96.0/21  | 20FF:CCFF:200A:A4::/64   | 20FF:CCFF:200A::/48 | Трум-пум      | R10e0/1 R11e0/1 |
+
+| Network IPv4     | Summary net    | Network IPv6             | Summary net         | Description   | Eq&port         |
 | 50.50.102.8/29   | 50.50.96.0/21  | 20FF:CCFF:200A:A5::/64   | 20FF:CCFF:200A::/48 | Трум-пум      | R9e0/3  R11e0/3 |
 | 50.50.104.0/24   | 50.50.104.0/23 | 20FF:CCFF:200B:A1::/64   | 20FF:CCFF:200B::/48 | Трам-пам      | R5e0/2  R7e0/2  |
 | 50.50.105.0/25   | 50.50.104.0/23 | 20FF:CCFF:200B:A2::/64   | 20FF:CCFF:200B::/48 | Трам-пам      | R5e0/1  R6e0/1  |
