@@ -17,10 +17,10 @@
 
 | Network IPv4     | Summary net    | Network IPv6             | Summary net         | Description   | Eq&port         |
 |-----------------:|:---------------|-------------------------:|:--------------------|:-------------:|-----------------|
-| 10.10.10.0/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:1::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R17e0/1 R18e0/1 |
-| 10.10.10.4/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:2::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R17e0/2 R19e0/2 |
-| 10.10.10.8/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:3::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R18e0/2 R20e0/2 |
-| 10.10.10.12/30  | 10.10.10.0/24 | 20FF:CCFF:FFFF:4::/64    | 20FF:CCFF:FFFF::/48 | ISP network   | R19e0/1 R20e0/1 |
+| 10.10.10.0/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:1::/64    | 20FF:CCFF:FFFF::/48 | AS 520   | R17e0/1 R18e0/1 |
+| 10.10.10.4/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:2::/64    | 20FF:CCFF:FFFF::/48 | AS 520    | R17e0/2 R19e0/2 |
+| 10.10.10.8/30   | 10.10.10.0/24 | 20FF:CCFF:FFFF:3::/64    | 20FF:CCFF:FFFF::/48 | AS 520    | R18e0/2 R20e0/2 |
+| 10.10.10.12/30  | 10.10.10.0/24 | 20FF:CCFF:FFFF:4::/64    | 20FF:CCFF:FFFF::/48 | AS 520    | R19e0/1 R20e0/1 |
 
 | Network IPv4     | Summary net    | Network IPv6             | Summary net         | Description   | Eq&port         |
 |-----------------:|:---------------|-------------------------:|:--------------------|:-------------:|-----------------|
