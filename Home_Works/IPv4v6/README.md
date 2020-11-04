@@ -225,6 +225,19 @@
 |	R32	|	e0/3	|	IPv4		|	10.10.30.26	|	10.10.30.24/32	|	to	R16	e0/3	|
 |	R32	|	e0/3	|	IPv6		|	20AA:BBCC:30:24::26/64	|	20AA:BBCC:30:24::/64	|	to	R16	e0/3	|
 |	R32	|	e0/3	|	IPv6	LL	|	FE80::32	|	FE80::/10	|	to	R16	e0/3	|
+|	SW9	|	e0/3	|	IPv4		|	10.10.30.1	|	10.10.10.0/30	|	to	R17	e0/0	|
+|	SW9	|	e0/3	|	IPv6		|	20AA:BBCC:30::1/64	|	20AA:BBCC:30::/64	|	to	R17	e0/0	|
+|	SW9	|	e0/3	|	IPv6	LL	|	FE80::9	|	FE80::/10	|	to	R17	e0/0	|
+|	SW9	|	e1/0	|	IPv4		|	10.10.30.5	|	10.10.30.4/30	|	to	R16	e0/2	|
+|	SW9	|	e1/0	|	IPv6		|	20AA:BBCC:30:4:5/64	|	20AA:BBCC:30:4:::/64	|	to	R16	e0/2	|
+|	SW9	|	e1/0	|	IPv6	LL	|	FE80::9	|	FE80::/10	|	to	R16	e0/2	|
+|	SW9	|	PO1 L3	|	IPv4		|	10.10.30.29	|	10.10.30.28/30	|	to	SW10	e0/0-1	|
+|	SW9	|	PO1 L3	|	IPv6		|	none	|	none	|	to	SW10	e0/0-1	|
+|	SW9	|	PO1 L3	|	IPv6	LL	|	none	|	none	|	to	SW10	e0/0-1	|
+|	SW9	|	VLAN40	|	IPv4		|	192.168.40.1	|	192.168.40.0/24	|	to	VPC8	eth0	|
+|	SW9	|	VLAN40	|	IPv6		|	none	|	none	|	to	R16	eth0	|
+|	SW9	|	VLAN40	|	IPv6	LL	|	none	|	none	|	to	R16	eth0	|
+
 
 
 
