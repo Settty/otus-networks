@@ -249,6 +249,10 @@
 |	SW10	|	e0/2 VLAN50	|	IPv4		|	192.168.50.1	|	192.168.50.0/24	|	to	VPC	eth0	|
 |	SW10	|	e0/2 VLAN50	|	IPv6		|	none	|	none	|	to	VPC	eth0	|
 |	SW10	|	e0/2 VLAN50	|	IPv6	LL	|	none	|	none	|	to	VPC	eth0	|
+|	R27	|	e0/0	|	IPv4		|	120.120.120.2	|	120.120.120.0/28	|	to	R25	e0/1	|
+|	R27	|	e0/0	|	IPv6		|	20AA:BBCC:120:120::2/64	|	20AA:BBCC:120:120::/64	|	to	R25	e0/1	|
+|	R27	|	e0/0	|	IPv6	LL	|	FE80::27	|	FE80::/10	|	to	R25	e0/1	|
+
 
 
 
