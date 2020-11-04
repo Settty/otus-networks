@@ -235,8 +235,21 @@
 |	SW9	|	PO1 L3	|	IPv6		|	none	|	none	|	to	SW10	e0/0-1	|
 |	SW9	|	PO1 L3	|	IPv6	LL	|	none	|	none	|	to	SW10	e0/0-1	|
 |	SW9	|	VLAN40	|	IPv4		|	192.168.40.1	|	192.168.40.0/24	|	to	VPC8	eth0	|
-|	SW9	|	VLAN40	|	IPv6		|	none	|	none	|	to	R16	eth0	|
-|	SW9	|	VLAN40	|	IPv6	LL	|	none	|	none	|	to	R16	eth0	|
+|	SW9	|	VLAN40	|	IPv6		|	none	|	none	|	to	VPC8	eth0	|
+|	SW9	|	VLAN40	|	IPv6	LL	|	none	|	none	|	to	VPC8	eth0	|
+|	SW10	|	e0/3	|	IPv4		|	10.10.30.13	|	10.10.10.12/30	|	to	R16	e0/0	|
+|	SW10	|	e0/3	|	IPv6		|	20AA:BBCC:30:12::13/64	|	20AA:BBCC:30:12::/64	|	to	R16	e0/0	|
+|	SW10	|	e0/3	|	IPv6	LL	|	FE80::10	|	FE80::/10	|	to	R16	e0/0	|
+|	SW10	|	e1/0	|	IPv4		|	10.10.30.9	|	10.10.30.8/30	|	to	R17	e0/2	|
+|	SW10	|	e1/0	|	IPv6		|	20AA:BBCC:30:8:9/64	|	20AA:BBCC:30:8:::/64	|	to	R17	e0/2	|
+|	SW10	|	e1/0	|	IPv6	LL	|	FE80::10	|	FE80::/10	|	to	R17	e0/2	|
+|	SW10	|	PO1 L3	|	IPv4		|	10.10.30.30	|	10.10.30.28/30	|	to	SW9	e0/0-1	|
+|	SW10	|	PO1 L3	|	IPv6		|	none	|	none	|	to	SW9	e0/0-1	|
+|	SW10	|	PO1 L3	|	IPv6	LL	|	none	|	none	|	to	SW9	e0/0-1	|
+|	SW10	|	e0/2VLAN50	|	IPv4		|	192.168.50.1	|	192.168.50.0/24	|	to	VPC	eth0	|
+|	SW10	|	e0/2VLAN50	|	IPv6		|	none	|	none	|	to	VPC	eth0	|
+|	SW10	|	e0/2VLAN50	|	IPv6	LL	|	none	|	none	|	to	VPC	eth0	|
+
 
 
 
