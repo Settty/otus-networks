@@ -361,26 +361,35 @@ Default Gateway 192.168.20.1
 
     spanning-tree vlan 20 priority 24576
 
+
+* VLAN 30
+
+Сеть VLAN 30 - 192.160.30.0 /24
+
+interface Vlan30
+
+    ip address 192.168.30.3 255.255.255.0
+    standby 2 ip 192.168.30.1
+    standby 2 priority 110
+    standby 2 preempt
+    
+Default Gateway 192.168.30.1 
+
+(Standby HSRP) - коммутатор SW5 является ACTIVE для VLAN 30 (установлен Priority 110)
+
+Коммутатор SW5 является Root для VLAN 30 (STP) 
+
+    spanning-tree vlan 30 priority 24576
+    
 Порты e0/2 e0/3 на обоих коммутаторах объеденены в L2 Etherchannel.
 
     Group  Port-channel  Protocol    Ports
     ------+-------------+-----------+-----------------------------------------------
      1      Po1(SU)         LACP      Et0/2(P)    Et0/3(P)  
 
+   
 
-VLAN 30
-Сеть VLAN 30 - 192.160.30.0 /24
-interface Vlan30
- ip address 192.168.30.3 255.255.255.0
- standby 2 ip 192.168.30.1
- standby 2 priority 110
- standby 2 preempt
-Default Gateway 192.168.30.1 (Standby HSRP) - коммутатор SW5 является ACTIVE для VLAN 30 (установлен Priority 110)
-Коммутатор SW5 является Root для VLAN 30 (STP) spanning-tree vlan 30 priority 24576
 
-L3
-Для L3 сегмента выделена сеть 10.10.20.0 /24
-Каждый маршрутизатор соединен друг с другом сетью /30.
 
 
 
