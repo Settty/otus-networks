@@ -363,12 +363,9 @@ Default Gateway 192.168.20.1
 
 Порты e0/2 e0/3 на обоих коммутаторах объеденены в L2 Etherchannel.
 
-
-Group  Port-channel  Protocol    Ports
-
-------+-------------+-----------+-----------------------------------------------
-
-1      Po1(SU)         LACP      Et0/2(P)    Et0/3(P)  
+    Group  Port-channel  Protocol    Ports
+    ------+-------------+-----------+-----------------------------------------------
+     1      Po1(SU)         LACP      Et0/2(P)    Et0/3(P)  
 
 
 VLAN 30
