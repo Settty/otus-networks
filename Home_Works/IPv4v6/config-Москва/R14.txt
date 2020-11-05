@@ -1,0 +1,118 @@
+
+R14>en
+R14#sh run
+Building configuration...
+
+Current configuration : 1319 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R14
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!         
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 20.20.20.14 255.255.255.255
+!
+interface Ethernet0/0
+ ip address 10.10.20.18 255.255.255.252
+ ipv6 address FE80::14 link-local
+ ipv6 address 20AA:BBCC:20:16::18/64
+ ipv6 enable
+!         
+interface Ethernet0/1
+ ip address 10.10.20.26 255.255.255.252
+ ipv6 address FE80::14 link-local
+ ipv6 address 20AA:BBCC:20:24::26/64
+ ipv6 enable
+!
+interface Ethernet0/2
+ ip address 50.50.50.2 255.255.255.240
+ ipv6 address FE80::14 link-local
+ ipv6 address 20AA:BBCC:50:50::2/64
+ ipv6 enable
+!
+interface Ethernet0/3
+ ip address 10.10.20.33 255.255.255.252
+ ipv6 address FE80::14 link-local
+ ipv6 address 20AA:BBCC:20:32::33/64
+ ipv6 enable
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input all
+!
+!
+end
