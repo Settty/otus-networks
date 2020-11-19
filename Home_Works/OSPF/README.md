@@ -152,12 +152,24 @@
  
 ### 4. Маршрутизатор R20 находится в зоне 102 и получает все маршруты, кроме маршрутов до сетей зоны 101.
       
-      R20(config-if)#ip ospf 1 area 101
-      R20(config-if)#ipv6 ospf 1 area 101
+      R20(config-if)#ip ospf 1 area 102
+      R20(config-if)#ipv6 ospf 1 area 102
       
  Далее необходимо выполнить фильтрацию маршрутов так, что бы R20 не получал маршрут из зоны 101. Т.е. не получал маршрут 10.10.20.32 /30 
  
- Ниже представлена таблица маршрутизации R20
+ Ниже представлена таблица маршрутизации R20 до фильтрации.
  
  ![](R20_route_1.png)
-
+ 
+ На ABR роутере R15 необходимо создать prefix-list для IPv4 и IPv6
+ 
+    R15(config)#ip prefix-list NO_AREA101 seq 5 deny 10.10.20.32/30
+    R15(config)#ip prefix-list NO_AREA101 seq 10 permit 0.0.0.0/0 le 32
+    
+    R15(config)#ipv6 prefix-list NO_AREA101 deny 20AA:BBCC:20:32::/64 - для IPv6
+    
+ Далее в конфигурации протокола OSPF указать нназвание prefix-list и действие prefix-list
+ 
+       R15(config-router)#area 102 filter-list prefix NO_AREA101 in - для IPv4
+       R15(config-rtr)#distribute-list prefix-list NO_AREA101 in - для IPv6
+     
