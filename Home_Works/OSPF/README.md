@@ -145,4 +145,8 @@
       R19(config-router)#area 101 stub
       R19(config-rtr)#area 101 stub
       
+ После введенных настроек таблица маршрутизации на R19 выглядит: 
+ 
+ ![](route_1.png)
+      
 
