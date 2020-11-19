@@ -114,6 +114,35 @@
 
 Согласно задания необходимо анонсировать маршрут по умолчанию. Данную процедуру необходимо выполнить на маршрутизаторах смотрящих на провайдера т.е R14 и R15.
 
+Для IPv4
+
       R14(config-router)#default-information originate always 
       R15(config-router)#default-information originate always 
+
+Для IPv6
+
+      R14(config-rtr)#default-information originate always
+      R15(config-rtr)#default-information originate always
+      
+### 3. Маршрутизатор R19 находится в зоне 101 и получает только маршрут по умолчанию.
+           
+     R19(config-if)#ip ospf 1 area 101
+     R19(config-if)#ipv6 ospf 1 area 101
+     
+ До выполнения задания "R19 получает только маршрут по умолчанию" таблица маршрутизации R19 выглядит следующим образом.
+ 
+ ![](route_1.png)
+ 
+ Для выполнения данного задания необходимо на ABR R14 маршрутизаторе выполнить команду:
+ 
+ Для IPv4 и IPv6
+ 
+     R14(config-router)#are 101 stub no-summary      
+     R14(config-rtr)#area 101 stub no-summary
+ 
+ На Stub маршрутизаторе R19:
+ 
+      R19(config-router)#area 101 stub
+      R19(config-rtr)#area 101 stub
+      
 
