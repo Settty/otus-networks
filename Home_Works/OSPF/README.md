@@ -85,6 +85,11 @@
        RX(config-if)#ip ospf network point-to-point
        RX(config-if)#ipv6 ospf network point-to-point
        
+ 4. В случае отключения линка между R14 и R15 произойдет разрыв между Area0. Для этого нужно создать Virtual-Link между R12 и R13. 
+ 
+        R12(config-router)#area 10 virtual-link 13.13.13.13
+        R13(config-router)#area 10 virtual-link 12.12.12.12
+       
       
 
 
