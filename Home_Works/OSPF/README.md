@@ -168,8 +168,14 @@
     
     R15(config)#ipv6 prefix-list NO_AREA101 deny 20AA:BBCC:20:32::/64 - для IPv6
     
- Далее в конфигурации протокола OSPF указать нназвание prefix-list и действие prefix-list
+ Далее в конфигурации протокола OSPF указать название prefix-list и действие prefix-list
  
-       R15(config-router)#area 102 filter-list prefix NO_AREA101 in - для IPv4
-       R15(config-rtr)#distribute-list prefix-list NO_AREA101 in - для IPv6
+    R15(config-router)#area 102 filter-list prefix NO_AREA101 in - для IPv4
+    R15(config-rtr)#distribute-list prefix-list NO_AREA101 in - для IPv6
+    
+ После ввода команд таблица маршрутизации на R20 выглядит следующим образом:
+ 
+ ![](R20_route_2.png)
+ 
+ Как видно из скриншота, маршруты IPv4 (10.10.20.32/30) и IPv6 (20AA:BBCC:20:32::/64) из зоны 101 пропали 
      
