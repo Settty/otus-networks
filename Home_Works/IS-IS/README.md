@@ -83,6 +83,8 @@
 Такими роутерами являются R23 и R25 
 
 ![](ISIS_Neighbors_L2.png)
+
+![](ISIS_Neighbors_L2_2.png)
       
 
 
