@@ -61,101 +61,28 @@
 
 ### Конфигурация маршрутизаторов сводиться к следующим настройкам:
 
-1. Включаем на роутере процес OSPF для IPv4 и IPv6
+1. Включаем на роутере процес IS-IS 
           
-       RX(config)#router ospf 1
-       RX(config)#ipv6 router ospf 1
+       RX(config)#router isis
+ 
+2. Согласно задания номер 2-4 назначаем Network Entity Title для каждого маршрутизатора
+
+       R23(config-router)#net 49.2222.0023.0023.0023.00
+       R24(config-router)#net 49.0024.0024.0024.0024.00
+       R25(config-router)#net 49.2222.0025.0025.0025.00
+       R26(config-router)#net 49.0026.0026.0026.0026.00
        
-2. Интерфейсы роутеров добавляем к анонсу OSPF IPv4 и IPv6 указывая номер AREA
- 
-       RX(config-if)#ip ospf 1 area X
-       RX(config-if)#ipv6 ospf 1 area X
- 
-3. По скольку в данной топологии все роутреы соеденены между собой точка-точка, то нет необходимости в выбое DR и BDR. Так же с помошью команды приведенной ниже прекратится рассылка LSA2, что снизит объем служебного трафика.
-      
-       RX(config-if)#ip ospf network point-to-point
-       RX(config-if)#ipv6 ospf network point-to-point
        
- 4. В случае отключения линка между R14 и R15 произойдет разрыв между Area0. Для этого нужно создать Virtual-Link между R12 и R13 для резервного маршрута. 
+3. Интерфейсы роутеров добавляем к анонсу IS-IS IPv4 и IPv6 
  
-        R12(config-router)#area 10 virtual-link 13.13.13.13
-        R13(config-router)#area 10 virtual-link 12.12.12.12
-        
-  
- На скриншоте видно, что если линк между R14 и R15 в рабочем сотсоянии то трафик от R19 идет через R14-R15-R20
+       RX(config-if)#ip router isis
+       RX(config-if)#ipv6 router isis
  
- ![](trace_1.png)
- 
- Создадим обрыв линка между R14 и R15. Как видно из скриншота, трафик от R19 пошел через R14-R12-R13-R15-R20
- 
- ![](trace_2.png)
-       
+
+По умолчанию на роутерах Cisco протокол IS-IS работает в режиме L1/L2. Соотвественно роутеры находящиеся в одной зоне буду генерировать по 2 LSP т.е LSP L1 и LSP L2.
+Такими роутерами являются R23 и R25 
+
+![](ISIS_Neighbors_L2.png)
       
 
-Согласно задания необходимо анонсировать маршрут по умолчанию. Данную процедуру необходимо выполнить на маршрутизаторах смотрящих на провайдера т.е R14 и R15.
 
-Для IPv4
-
-      R14(config-router)#default-information originate always 
-      R15(config-router)#default-information originate always 
-
-Для IPv6
-
-      R14(config-rtr)#default-information originate always
-      R15(config-rtr)#default-information originate always
-      
-### 3. Маршрутизатор R19 находится в зоне 101 и получает только маршрут по умолчанию.
-           
-     R19(config-if)#ip ospf 1 area 101
-     R19(config-if)#ipv6 ospf 1 area 101
-     
- До выполнения задания "R19 получает только маршрут по умолчанию" таблица маршрутизации R19 выглядит следующим образом.
- 
- ![](route_1.png)
- 
- Для выполнения данного задания необходимо на ABR R14 маршрутизаторе выполнить команду:
- 
- Для IPv4 и IPv6
- 
-     R14(config-router)#are 101 stub no-summary      
-     R14(config-rtr)#area 101 stub no-summary
- 
- На Stub маршрутизаторе R19:
- 
-      R19(config-router)#area 101 stub
-      R19(config-rtr)#area 101 stub
-      
- После введенных настроек таблица маршрутизации на R19 выглядит: 
- 
- ![](route_2.png)
- 
- 
-### 4. Маршрутизатор R20 находится в зоне 102 и получает все маршруты, кроме маршрутов до сетей зоны 101.
-      
-      R20(config-if)#ip ospf 1 area 102
-      R20(config-if)#ipv6 ospf 1 area 102
-      
- Далее необходимо выполнить фильтрацию маршрутов так, что бы R20 не получал маршрут из зоны 101. Т.е. не получал маршрут IPv4 10.10.20.32 /30 и IPv6 (20AA:BBCC:20:32::/64) 
- 
- Ниже представлена таблица маршрутизации R20 до фильтрации.
- 
- ![](R20_route_1.png)
- 
- На ABR роутере R15 необходимо создать prefix-list для IPv4 и IPv6
- 
-    R15(config)#ip prefix-list NO_AREA101 seq 5 deny 10.10.20.32/30
-    R15(config)#ip prefix-list NO_AREA101 seq 10 permit 0.0.0.0/0 le 32
-    
-    R15(config)#ipv6 prefix-list NO_AREA101 deny 20AA:BBCC:20:32::/64 - для IPv6
-    
- Далее в конфигурации протокола OSPF указать название prefix-list и действие prefix-list
- 
-    R15(config-router)#area 102 filter-list prefix NO_AREA101 in - для IPv4
-    R15(config-rtr)#distribute-list prefix-list NO_AREA101 in - для IPv6
-    
- После ввода команд таблица маршрутизации на R20 выглядит следующим образом:
- 
- ![](R20_route_2.png)
- 
- Как видно из скриншота, маршруты IPv4 (10.10.20.32/30) и IPv6 (20AA:BBCC:20:32::/64) из зоны 101 пропали 
-     
