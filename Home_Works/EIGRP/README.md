@@ -96,22 +96,31 @@
 
 ### Конфигурация маршрутизаторов сводиться к следующим настройкам:
 
-1. Включаем на роутере процес IS-IS 
+1. Включаем на всех роутерах процес EIGRP в режиме Named Mode. 
           
-       RX(config)#router isis
+       RX(config)#router eigrp PITER - команда включает процес EIGRP в named mode с именем PITER на всех роутрах. 
  
-2. Согласно задания номер 2-4 назначаем Network Entity Title для каждого маршрутизатора
+2. Производим настройку динамической маршрутизации для IPv4 и IPv6
 
-       R23(config-router)#net 49.2222.0023.0023.0023.00
-       R24(config-router)#net 49.0024.0024.0024.0024.00
-       R25(config-router)#net 49.2222.0025.0025.0025.00
-       R26(config-router)#net 49.0026.0026.0026.0026.00
+       RX(config-router)#address-family ipv4 unicast autonomous-system 100
+       RX(config-router)#address-family ipv6 unicast autonomous-system 100
        
        
-3. Интерфейсы роутеров добавляем к анонсу IS-IS IPv4 и IPv6 
+3. Интерфейсы роутеров добавляем к анонсу EIGRP IPv4 (применительно только для IPv4, для IPv6 задана по умолчанию) 
  
-       RX(config-if)#ip router isis
-       RX(config-if)#ipv6 router isis
+       RX(config-router-af)#network 0.0.0.0
+       
+4.  Следующая команда позволяет задать общие настройки для всех интерфейсов учавствующих в обмене EIGRP пакетами.
+
+        RX(config-router-af)#af-interface default
+        
+5.  Данная команда отключает процес обмена EIGRP пакетами на всех интерфейсах.
+
+        RX(config-router-af-interface)#shutdown
+        
+        RX(config-router-af)#af-interface ethernet x/z - вход в настройку интерфейса учавствующего в обмене EIGRP пакетами.
+        RX(config-router-af)#no shutdown - включаем обмен EIGRP пакетами конкретно на необходимом интерфейсе
+       
  
 
 По умолчанию на роутерах Cisco протокол IS-IS работает в режиме L1/L2. Соотвественно роутеры находящиеся в одной зоне буду генерировать по 2 LSP т.е LSP L1 и LSP L2.
