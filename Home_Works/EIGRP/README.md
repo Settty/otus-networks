@@ -100,7 +100,7 @@
           
        RX(config)#router eigrp PITER - команда включает процес EIGRP в named mode с именем PITER на всех роутрах. 
  
-2. Производим настройку динамической маршрутизации для IPv4 и IPv6 и добавляем Router ID
+2. Производим настройку динамической маршрутизации для IPv4 и IPv6 и добавляем Router ID к каждой address-family
 
        RX(config-router)#address-family ipv4 unicast autonomous-system 100
        RX(config-router)#address-family ipv6 unicast autonomous-system 100
@@ -121,10 +121,16 @@
         
         RX(config-router-af)#af-interface ethernet x/z - вход в настройку интерфейса учавствующего в обмене EIGRP пакетами.
         RX(config-router-af)#no shutdown - включаем обмен EIGRP пакетами конкретно на необходимом интерфейсе
+        
+        
        
- После введенных настроек таблица маршрутизации на всех роутерах выглядит следующим образом.
+ ### После введенных настроек таблица маршрутизации на всех роутерах выглядит следующим образом.
  
  ![](route_IPv4.png)
+ 
+ Для примера использован маршрутизатор R16.
+ 
+Сети LoopBack 30.30.30.X - где X это цифра номера маршрутизатора согласно схемы.
 
 
 
