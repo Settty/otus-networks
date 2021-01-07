@@ -100,7 +100,7 @@
           
        RX(config)#router eigrp PITER - команда включает процес EIGRP в named mode с именем PITER на всех роутрах. 
  
-2. Производим настройку динамической маршрутизации для IPv4 и IPv6 и добавляем Router ID
+2. Производим настройку динамической маршрутизации для IPv4 и IPv6 и добавляем Router ID к каждой address-family
 
        RX(config-router)#address-family ipv4 unicast autonomous-system 100
        RX(config-router)#address-family ipv6 unicast autonomous-system 100
