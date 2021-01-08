@@ -140,15 +140,30 @@
 
 Для выполнения данного задания необходимо на маршрутизаторе R16 ввести следующие команды.
 
+Для IPv4
+
      R16(config)#router eigrp PITER
      R16(config-router)#address-family ipv4 unicast autonomous-system 100
      R16(config-router-af)#af-interface e0/3 - этот инерфейс смотрит на маршрутизатор R32
      R16(config-router-af-interface)#summary-address 0.0.0.0 0.0.0.0
+
+Для IPv6
+
+     R16(config)#router eigrp PITER
+     R16(config-router)#address-family ipv6 unicast autonomous-system 100
+     R16(config-router-af)#af-interface e0/3 - этот инерфейс смотрит на маршрутизатор R32
+     R16(config-router-af-interface)#summary-address ::/0
      
  
  После введения данных команд таблица маршрутизации роутера R32 соответствует заданию.
 
+Для IPv4
 
+![](route32_IPv4.png)
+
+Для IPv6
+
+![](route32_IPv6.png)
 
      
      
