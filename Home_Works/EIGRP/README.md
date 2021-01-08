@@ -144,6 +144,9 @@
      R16(config-router)#address-family ipv4 unicast autonomous-system 100
      R16(config-router-af)#af-interface e0/3 - этот инерфейс смотрит на маршрутизатор R32
      R16(config-router-af-interface)#summary-address 0.0.0.0 0.0.0.0
+     
+ 
+ После введения данных команд таблица маршрутизации роутера R32 соответствует заданию.
 
 
 
