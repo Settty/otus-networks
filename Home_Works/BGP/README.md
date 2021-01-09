@@ -98,5 +98,5 @@ BGP. Основы
   Пример R14 Москва - R22 Киторн
   
        R14(config)#router bgp 1001
-       RX(config-router)#neighbor 50.50.50.1 remote-as 101
+       R14(config-router)#neighbor 50.50.50.1 remote-as 101
        
