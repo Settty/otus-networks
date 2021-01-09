@@ -66,9 +66,12 @@ BGP. Основы
        RX(config)#router BGP X - где X номер автономной системы. 
        
  Роутеры учавствующие в обмене BGP Update:
-R14 R15 R21 R22 R24 R26 R18
+R14; R15; R21; R22; R24; R26; R18;
  
-2.
+2. Назначаем на каждом роутере Router ID для BGP
+
+       RX(config)#router bgp X
+       RX(config-router)#bgp router-id x.x.x.x - где x.x.x.x номер роутера согласно схемы. R14 - router-id 14.14.14.14
      
      
 
