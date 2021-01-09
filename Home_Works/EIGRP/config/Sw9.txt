@@ -1,0 +1,190 @@
+
+!
+! Last configuration change at 22:07:15 EET Sat Jan 9 2021
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW9
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 9.9.9.9 255.255.255.255
+!
+interface Ethernet0/0
+ no shutdown
+ no switchport
+ ip address 10.10.30.9 255.255.255.252
+ duplex auto
+ ipv6 address FE80::9 link-local
+ ipv6 address 20AA:BBCC:30:8::9/64
+ ipv6 enable
+!
+interface Ethernet0/1
+ no shutdown
+ shutdown
+!
+interface Ethernet0/2
+ no shutdown
+ switchport access vlan 40
+ switchport mode access
+!
+interface Ethernet0/3
+ no shutdown
+ no switchport
+ ip address 10.10.30.1 255.255.255.252
+ duplex auto
+ ipv6 address FE80::9 link-local
+ ipv6 address 20AA:BBCC:30::1/64
+ ipv6 enable
+!
+interface Ethernet1/0
+ no shutdown
+ no switchport
+ ip address 10.10.30.5 255.255.255.252
+ duplex auto
+ ipv6 address FE80::9 link-local
+ ipv6 address 20AA:BBCC:30:4::5/64
+ ipv6 enable
+!
+interface Ethernet1/1
+ no shutdown
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ shutdown
+!
+interface Ethernet1/3
+ no shutdown
+ shutdown
+!
+interface Vlan40
+ no shutdown
+ ip address 192.168.40.1 255.255.255.0
+!
+!
+router eigrp PITER
+ !
+ address-family ipv4 unicast autonomous-system 100
+  !
+  af-interface default
+   shutdown
+  exit-af-interface
+  !
+  af-interface Ethernet0/3
+   no shutdown
+  exit-af-interface
+  !
+  af-interface Ethernet1/0
+   no shutdown
+  exit-af-interface
+  !
+  af-interface Loopback0
+   no shutdown
+  exit-af-interface
+  !
+  af-interface Ethernet0/2
+   no shutdown
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   no shutdown
+  exit-af-interface
+  !
+  af-interface Vlan40
+   no shutdown
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 0.0.0.0
+  eigrp router-id 9.9.9.9
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 100
+  !
+  af-interface default
+   shutdown
+  exit-af-interface
+  !
+  af-interface Ethernet0/3
+   no shutdown
+  exit-af-interface
+  !
+  af-interface Ethernet1/0
+   no shutdown
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   no shutdown
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  eigrp router-id 9.9.9.9
+ exit-address-family
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+!
+!
+end
