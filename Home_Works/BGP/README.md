@@ -152,3 +152,13 @@ BGP. Основы
 ## 2. Выполнить редистрибуцию маршрутов из BGP в протокол IGP.
 
 Редистрибуцию маршрутов необходимо выполнить только для EIGRP в Питере т.к. в Москве согласно предыдущего задания по OSPF на роутерах R14 и R15 выполнена команда default-information originate и каждый роутер находящийся в AS1001 получает O*E2  0.0.0.0/0 [110/1]
+
+Для выполнения редистрибуции из BGP в EIGRP (Питер) необходимо на роутере R18 выполнить следующие команды:
+
+     R18(config)#router eigrp PITER
+     R18(config-router)#address-family ipv4 unicast autonomous-system 100
+     R18(config-router-af)#topology base
+     R18(config-router-af-topology)#redistribute bgp 2042 metric 10000 10 255 1 1500
+     
+После выполнения данных команд на всех маршрутизаторах EIGRP появиться маршруты D EX  192.168.20.0/24 и D EX  192.168.30.0/24
+     
