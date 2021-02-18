@@ -63,4 +63,22 @@ BGP. Фильтрация
 
  
  
+## 2. Настроить фильтрацию в офисе С.-Петербург так, чтобы не появилось транзитного трафика(Prefix-list)
 
+На R18 согласно задания созадим prefix-list.
+
+     ip prefix-list AS2042 seq 5 permit 200.200.30.0/24
+     
+Далее создадим route-map и будем "матчить" адреса из prefix-list созданного ранее
+
+     route-map AS2042 permit 10
+     match ip address prefix-list AS2042
+     
+Повесим route-map на двух соседей Триады
+     
+     neighbor 100.100.100.1 route-map AS2042 out
+     neighbor 110.110.110.1 route-map AS2042 out
+     
+Из скриншота видно, что R18 отдает двум соседям только свой префикс PI адресов
+
+ ![](R18.png)    
