@@ -24,14 +24,16 @@
        
 2. На роутерах R14 и R15: 
 
-назначим интерфейсы e0/0 как ip nat inside
-назначим интерфейсы e0/2 как ip nat outside
+   назначим интерфейсы e0/0 как ip nat inside
+
+   назначим интерфейсы e0/2 как ip nat outside
 
 3. На роутерах R14 и R15 создадим запись для Nat трансляции согласно задания
 
        ip nat inside source list 1 interface Loopback1 overload
        
-Loopback1 это PI адреса AS1001
+    Loopback1 это PI адреса AS1001
 
-для R14 LoppBack1 100.100.100.14 /32
-для R15 LoppBack1 100.100.100.15 /32
+    для R14 LoppBack1 100.100.100.14 /32
+
+    для R15 LoppBack1 100.100.100.15 /32
