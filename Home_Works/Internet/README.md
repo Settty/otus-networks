@@ -158,7 +158,65 @@
  
   ![](SSH_R28_R19.png)
   
+ ##  5. Настроите статический NAT(PAT) для офиса Чокурдах*.
+
+  В данной схеме к роутеру R28 Чокурдах подключен провайдер Триада с предоставлением выхода в Интернет через два линка.
+  Пусть сети офиса Чокурдах выходят через один линк, по умолчанию через R25 130.130.130.1. Если канал падает, то будет происходить переключение на R26 140.140.140.1.
+  Для этого понадобится трек отслеживания который был настроен в ДЗ по PBR. IP Sla пингует хост 130.130.130.1 кажые 5 сек. И если хост 130.130.130.1 падает то на R28 
+  Чокурадх появляется следущее сообщение 
   
+    "%TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down"
+  
+  Если хост 130.130.130.1 поднимается, то появляется следущее сообщение 
+     
+    "%TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up"
+
+  На основании данных сообщений будет применен Cisco Even Manager, данная технология на основании появления определенных логов будет выполнять ряд последовательных команд.
+  
+  1. На R28 пометим интерфейсы как IP Nat Outside и IP Nat Inside
+  
+         e0/0 и e0/1 - ip nat outside
+         e0/2.60 и e0/2.70 - ip nat inside
+         
+  2. Создадим access-list для подсетей офиса Чокурдах
+  
+         access-list 10 permit 192.168.0.0 0.0.255.255  
+
+  3. На интерфейс e0/1 R28 добавим secondary адрес. Из под этого адреса будет осуществляться nat трансляция. Если выполнять nat трансляцию через основной ip, то трек отслеживания перестанет работать.
+          
+          interface Ethernet0/1
+          ip address 130.130.130.3 255.255.255.240 secondary
+          ip address 130.130.130.2 255.255.255.240
+          ip nat outside
+          
+   4. На R28 создадим два пула NAT. Это необходимо для переключения между пулами, когда падает основной линк.
+   
+          ip nat pool NAT_130 130.130.130.3 130.130.130.3 netmask 255.255.255.240
+          ip nat pool NAT_140 140.140.140.2 140.140.140.2 netmask 255.255.255.240
+          
+   5. Создадим Nat трансляцию которая будет использоваться по умолчанию 
+
+          ip nat inside source list 10 pool NAT_130 overload   
+          
+   6.   Настроим Cisco Event Менеджер 
+
+    event manager applet NAT_130_DOWN - название Эвента
+     event syslog pattern "%TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down" - событие по которому будет происходить выполнение последовательных команд
+      action 1.1 cli command "enable"
+      action 1.2 cli command "clear ip nat tr *"
+      action 1.3 cli command "configure terminal"
+      action 1.4 cli command "no ip nat inside source list 10 pool NAT_130 overload"
+      action 1.5 cli command "ip nat inside source list 10 pool NAT_140 overload"
+      action 1.6 cli command "end"
+    event manager applet NAT_130_UP
+     event syslog pattern "%TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up"
+      action 1.1  cli command "enable"
+      action 1.2  cli command "clear ip nat tr *"
+      action 1.3  cli command "configure terminal"
+      action 1.4  cli command "no ip nat inside source list 10 pool NAT_140 overload"
+      action 1.5  cli command "ip nat inside source list 10 pool NAT_143 overload"
+      action 1.6  cli command "end"
+
  ##  6. Настроите для IPv4 DHCP сервер в офисе Москва на маршрутизаторах R12 и R13. VPC1 и VPC7 должны получать сетевые настройки по DHCP
 
    1. На роутерах R12 и R13 исключаем адреса для автоматической выдачи по DHCP
