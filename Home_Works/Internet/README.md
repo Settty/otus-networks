@@ -171,7 +171,12 @@
      
     "%TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up"
 
-  На основании данных сообщений будет применен Cisco Even Manager, данная технология на основании появления определенных логов будет выполнять ряд последовательных команд.
+  На основании данных сообщений будет применен Cisco Event Manager, данная технология на основании появления определенных логов будет выполнять ряд последовательных команд.
+  
+  На R28 в таблице маршрутизации находятся два маршрута по умолчанию
+  
+    ip route 0.0.0.0 0.0.0.0 130.130.130.1 track 1
+    ip route 0.0.0.0 0.0.0.0 140.140.140.1 20
   
   1. На R28 пометим интерфейсы как IP Nat Outside и IP Nat Inside
   
@@ -214,8 +219,16 @@
       action 1.2  cli command "clear ip nat tr *"
       action 1.3  cli command "configure terminal"
       action 1.4  cli command "no ip nat inside source list 10 pool NAT_140 overload"
-      action 1.5  cli command "ip nat inside source list 10 pool NAT_143 overload"
+      action 1.5  cli command "ip nat inside source list 10 pool NAT_130 overload"
       action 1.6  cli command "end"
+
+  Из скриншота видно что срабатывает %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down и происходит переключение с маршрута по умолчанию на 140.140.140.1 и меняется трансляцию серых адресов из пула NAT_130 в NAT_140 
+  
+ ![](event_down.png)
+ 
+ Так же когда срабатывает TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up, то происходит обратная ситуация и так же меняется маршрут по умолчанию и трансляцию адресов в другой пул
+ 
+ ![](event_up.png)
 
  ##  6. Настроите для IPv4 DHCP сервер в офисе Москва на маршрутизаторах R12 и R13. VPC1 и VPC7 должны получать сетевые настройки по DHCP
 
