@@ -1,0 +1,170 @@
+
+!
+! Last configuration change at 10:39:36 MSK Mon Feb 22 2021
+! NVRAM config last updated at 11:30:35 MSK Mon Feb 22 2021
+! NVRAM config last updated at 11:30:35 MSK Mon Feb 22 2021
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R23
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone MSK 3 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 23.23.23.23 255.255.255.255
+ ip router isis 
+!
+interface Loopback1
+ no shutdown
+ ip address 150.150.150.1 255.255.255.255
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 80.80.80.2 255.255.255.240
+ ipv6 address FE80::23 link-local
+ ipv6 address 20AA:BBCC:80:80::2/64
+ ipv6 enable
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 10.10.10.1 255.255.255.252
+ ip router isis 
+ ip ospf network point-to-point
+ ipv6 address FE80::23 link-local
+ ipv6 address 20AA:BBCC:10::1/64
+ ipv6 enable
+ ipv6 router isis 
+ isis circuit-type level-1
+!
+interface Ethernet0/2
+ no shutdown
+ ip address 10.10.10.14 255.255.255.252
+ ip router isis 
+ ipv6 address FE80::23 link-local
+ ipv6 address 20AA:BBCC:10:12::14/64
+ ipv6 enable
+ ipv6 router isis 
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router isis
+ net 49.2222.0023.0023.0023.00
+ log-adjacency-changes
+!
+router bgp 520
+ bgp router-id 23.23.23.23
+ bgp log-neighbor-changes
+ network 80.80.80.0 mask 255.255.255.240
+ network 150.150.150.0 mask 255.255.255.0
+ neighbor 24.24.24.24 remote-as 520
+ neighbor 24.24.24.24 update-source Loopback0
+ neighbor 25.25.25.25 remote-as 520
+ neighbor 25.25.25.25 update-source Loopback0
+ neighbor 26.26.26.26 remote-as 520
+ neighbor 26.26.26.26 update-source Loopback0
+ neighbor 80.80.80.1 remote-as 101
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 150.150.150.0 255.255.255.0 Null0
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input all
+!
+ntp master 1
+!
+end
