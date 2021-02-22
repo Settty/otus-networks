@@ -102,8 +102,9 @@ BGP. Фильтрация
  
  Так же на R22 создать prefix-list запрещающий отдавать префиксы Триады и Питера. В BGP "повесить prefix-list на соседа R14 50.50.50.2.
  
-      ip prefix-list DENY deny 150.150.150.0/24
-      ip prefix-list DENY deny 200.200.200.30/24
+      ip prefix-list DENY deny 0.0.0.0/0
+      router bgp 101
+      neighbor 50.50.50.2 prefix-list DENY out
        
  Таблица R14 до применения команды
  
