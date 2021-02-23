@@ -96,3 +96,52 @@
  Так же видно что ПК из офиса Питера после падения канала между R15 и R18 стал идти через 172.16.0.5, а после восстановления канала снова стал идти через 172.16.0.1
  
  ![](pingVPC8_2.png)
+
+
+
+## 2. Настроите DMVMN между Москва и Чокурдах, Лабытнанги
+
+ 1. На R15 Москва создадим Tunnel1 (Tunnel0 используется для GRE c Питером). Подсесть для DMVPN будет 172.16.10.0 /24
+
+        interface Tunnel1
+        ip address 172.16.10.1 255.255.255.0 адрес подсети для туннеля DMVPN
+        ip mtu 1400
+        ip nhrp map multicast dynamic
+        ip nhrp network-id 1 - задает идентификатор процесса NHRP
+        ip nhrp redirect - данная команда включает режим 3 фазы DMVPN на HUB
+        ip tcp adjust-mss 1360
+        tunnel source Loopback1 - это PI адрес R15. Можно было указать IP как в варианте с GRE (100.100.20.15)
+        tunnel mode gre multipoint
+        
+  2. На R27 Лабытнаги создадим Tunnel0 
+
+         interface Tunnel0
+         ip address 172.16.10.2 255.255.255.0
+         ip mtu 1400
+         ip nhrp map 172.16.10.1 100.100.20.15 - указывает соответсвие между адресом туннеля и белым адресом Hub
+         ip nhrp map multicast 100.100.20.15 
+         ip nhrp network-id 1
+         ip nhrp nhs 172.16.10.1
+         ip nhrp shortcut - данная команда включает режим 3 фазы DMVPN на SPOKE
+         ip tcp adjust-mss 1360
+         tunnel source Ethernet0/0 - интерфейс источника. Можно было прописать IP выдаваемый от Триады (120.120.120.2)
+         tunnel mode gre multipoint - задает режим работы туннеля
+         
+   3. На R28 Чокурдах создадим Tunnel0 аналогично R27
+
+          interface Tunnel0
+          ip address 172.16.10.3 255.255.255.0
+          ip mtu 1400
+          ip nhrp map 172.16.10.1 100.100.20.15 - указывает соответсвие между адресом туннеля и белым адресом Hub
+          ip nhrp map multicast 100.100.20.15 
+          ip nhrp network-id 1
+          ip nhrp nhs 172.16.10.1
+          ip nhrp shortcut - данная команда включает режим 3 фазы DMVPN на SPOKE
+          ip tcp adjust-mss 1360
+          tunnel source Ethernet0/1 - интерфейс источника. Можно было прописать IP выдаваемый от Триады (130.130.130.2)
+          tunnel mode gre multipoint - задает режим работы туннеля  
+          
+    
+   Проверяем на R15 установку туннелей между R27 и R28 
+   
+   ![](R15_DM.png)
