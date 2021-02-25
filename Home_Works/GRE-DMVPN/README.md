@@ -112,6 +112,8 @@
         ip tcp adjust-mss 1360
         tunnel source Loopback1 - это PI адрес R15. Можно было указать IP как в варианте с GRE (100.100.20.15)
         tunnel mode gre multipoint
+        ip ospf network point-to-multipoint - режим работы OSPF в NBMA сети
+        ip ospf 1 area 0
         
   2. На R27 Лабытнаги создадим Tunnel0 
 
@@ -126,6 +128,8 @@
          ip tcp adjust-mss 1360
          tunnel source Ethernet0/0 - интерфейс источника. Можно было прописать IP выдаваемый от Триады (120.120.120.2)
          tunnel mode gre multipoint - задает режим работы туннеля
+         ip ospf network point-to-multipoint
+         ip ospf 1 area 0
          
    3. На R28 Чокурдах создадим Tunnel0 аналогично R27
 
@@ -139,7 +143,9 @@
           ip nhrp shortcut - данная команда включает режим 3 фазы DMVPN на SPOKE
           ip tcp adjust-mss 1360
           tunnel source Ethernet0/1 - интерфейс источника. Можно было прописать IP выдаваемый от Триады (130.130.130.2)
-          tunnel mode gre multipoint - задает режим работы туннеля  
+          tunnel mode gre multipoint - задает режим работы туннеля
+          ip ospf network point-to-multipoint
+          ip ospf 1 area 0
           
     
    Проверяем на R15 установку туннелей между R27 и R28 
@@ -149,3 +155,28 @@
    Проверяем на R27 установку таблицу NHRP и PING до R28 (172.16.10.3) 
    
    ![](R27.png)
+
+   Но если по каким-либо причинам Hub роутер R15 будет недоступен, то R27 через некоторое время потеряет доступность с R28. 
+   Для повышения отказоустойчивости натсроем еще один Hub роутер R14. 
+   Схема сети DMVPN будет Dual Hub Single Cloud.
+   
+   4. На R14 Москва создадим Tunnel1 (Tunnel0 используется для GRE c Питером). Подсесть для DMVPN будет 172.16.10.0 /24.
+
+          interface Tunnel1
+          ip address 172.16.10.20 255.255.255.0 адрес подсети для туннеля DMVPN
+          ip mtu 1400
+          ip nhrp map multicast dynamic
+          ip nhrp network-id 1 - задает идентификатор процесса NHRP
+          ip nhrp redirect - данная команда включает режим 3 фазы DMVPN на HUB
+          ip tcp adjust-mss 1360
+          tunnel source Loopback1 - это PI адрес R14. Можно было указать IP как в варианте с GRE (100.100.20.15)
+          tunnel mode gre multipoint
+          ip ospf network point-to-multipoint - режим работы OSPF в NBMA сети 
+          ip ospf 1 area 0
+          
+   5. На роутерах R27 и R28 SPOKE ввести дополнительные команды для второго NHS R14 172.16.10.20 
+
+          ip nhrp map 172.16.10.20 100.100.20.14 - указывает соответсвие между адресом туннеля и белым адресом Hub 2 R14
+          ip nhrp map multicast 100.100.20.14
+          ip nhrp nhs 172.16.10.20 - второй NHS сервер R14
+           
