@@ -1,0 +1,161 @@
+
+!
+! Last configuration change at 12:18:53 EET Thu Feb 25 2021
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R27
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 27.27.27.27 255.255.255.255
+!
+interface Tunnel0
+ no shutdown
+ ip address 172.16.10.2 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 172.16.10.1 60.60.60.2
+ ip nhrp map multicast 60.60.60.2
+ ip nhrp map 172.16.10.20 100.100.20.14
+ ip nhrp map multicast 100.100.20.14
+ ip nhrp network-id 1
+ ip nhrp nhs 172.16.10.1
+ ip nhrp nhs 172.16.10.20
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ ip ospf 1 area 0
+ tunnel source Ethernet0/0
+ tunnel mode gre multipoint
+!
+interface Tunnel1
+ no shutdown
+ no ip address
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 120.120.120.2 255.255.255.240
+ ipv6 address FE80::27 link-local
+ ipv6 address 20AA:BBCC:120:120::2/64
+!
+interface Ethernet0/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 27.27.27.27
+ neighbor 172.16.10.20 cost 2000
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 120.120.120.1
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input all
+!
+!
+end
