@@ -21,27 +21,50 @@ IPSec over DmVPN
  1. На роутере R15 и R18 настроить первую и вторую фазы IPSec, настройка профиля IPSec
 
         1 Фаза
-        crypto isakmp policy 1 - создает ISAKMP
+        crypto isakmp policy 1 - создает политики шифрования для 1 Фазы
         encr aes - устанавливает шифрование
-        authentication pre-share - аутентификация по ключу 
-        crypto isakmp key OTUS address 200.200.30.18 - сам ключ OTUS с указанием адреса с которым будет утсановлен IPSec. В данном случае с R18
+        authentication pre-share - аутентификация по ключу
+        group 14 - передеача хеша ключа по DH 2048 bit
+        lifetime 3600 - изменение ключа каждый час
+        crypto isakmp key 12345 address 200.200.30.18 - сам ключ 12345 с указанием адреса с которым будет утсановлен IPSec. В данном случае с R18
         
         2 Фаза
-        crypto ipsec transform-set IPSEC esp-aes esp-sha-hmac - команды для шифрования пользовательских данных
-        mode transport - режим туннеля
+        crypto ipsec transform-set PITER esp-aes esp-sha-hmac - режим для шифрования пользовательских данных с использованием протокола ESP
+        mode transport - режим туннеля. В режиме transport не создается новый IP заголовок как в tunnel режиме. Экономится 20 байт
         
         настройка профиля IPSec
-        crypto ipsec profile IPSEC_OTUS - создать профиль IPSec с именем IPSEC_OTUS 
-        set transform-set IPSEC
+        crypto ipsec profile PITER - создать профиль IPSec с именем PITER 
+        set transform-set PITER - привязать настройки 2 фазы к профилю. Название профиля совпадает по имени с название 2 фазы для удобства.
         
-        На интерфейсе Tunnel 0 применить настройки IPSec
+        Для привязки настроек к Tunnel 0 необходимо вместо crypto map использовать crypto ipsec profile
+        
+        На интерфейсе Tunnel 0 применить настройки IpSec 2 фазы
         int Tun 0
-        tunnel protection ipsec profile IPSEC_OTUS
+        tunnel protection ipsec profile PITER
         
  2. На роутере R18 создать аналогичные настройки как на R15
-
-        crypto isakmp key OTUS address 100.100.20.15 - отличительная команда указывающая на IP роутера R15 Москва
         
+        1 Фаза
+        crypto isakmp policy 1 - создает политики шифрования для 1 фазы
+        encr aes - устанавливает шифрование
+        authentication pre-share - аутентификация по ключу
+        group 14 - передеача хеша ключа по DH 2048 bit
+        lifetime 3600 - изменение ключа каждый час
+        crypto isakmp key 12345 address 100.100.20.15 -  отличительная команда указывающая на IP роутера R15 Москва
+        
+        2 Фаза
+        crypto ipsec transform-set MSK esp-aes esp-sha-hmac - режим для шифрования пользовательских данных с использованием протокола ESP
+        mode transport - режим туннеля. В режиме transport не создается новый IP заголовок как в tunnel режиме. Экономится 20 байт
+        
+        настройка профиля IPSec
+        crypto ipsec profile PITER - создать профиль IPSec с именем PITER 
+        set transform-set PITER - привязать настройки 2 фазы к профилю. Название профиля совпадает по имени с название 2 фазы для удобства.
+        
+        Для привязки настроек к Tunnel 0 необходимо вместо crypto map использовать crypto ipsec profile
+        
+        На интерфейсе Tunnel 0 применить настройки IpSec 2 фазы
+        int Tun 0
+        tunnel protection ipsec profile PITER
         
   3. На роутерах Москвы R15 и Питера R18 прописать статические маршруты до сетей офиса
   
