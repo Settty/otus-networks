@@ -163,7 +163,7 @@
    4. На R14 Hub2 Москва создадим Tunnel1 (Tunnel0 используется для GRE c Питером). Подсесть для DMVPN будет 172.16.10.0 /24.
 
           interface Tunnel1
-          ip address 172.16.10.20 255.255.255.0 адрес подсети для туннеля DMVPN
+          ip address 172.16.10.20 255.255.255.0 адрес подсети для туннеля DMVPN (из той же подсети, что и R15 у которого 172.16.10.1/24)
           ip mtu 1400
           ip nhrp map multicast dynamic
           ip nhrp network-id 1 - задает идентификатор процесса NHRP
