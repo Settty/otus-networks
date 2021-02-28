@@ -92,6 +92,21 @@ IPSec over DmVPN
          authentication pre-share
          group 14 
          lifetime 3600
+         crypto isakmp key 123456 address 200.200.30.18
+         
+         2 Фаза
+         crypto ipsec transform-set IPSec esp-aes esp-sha-hmac - режим для шифрования пользовательских данных с использованием протокола ESP
+         mode transport - режим туннеля. В режиме transport не создается новый IP заголовок как в tunnel режиме. Экономится 20 байт
+        
+         настройка профиля IPSec
+         crypto ipsec profile IPSec - создать профиль IPSec с именем IPSec
+         set transform-set IPSec - привязать настройки 2 фазы к профилю. Название профиля совпадает по имени с название 2 фазы для удобства.
+        
+         Для привязки настроек к Tunnel 0 необходимо вместо crypto map использовать crypto ipsec profile
+        
+         На интерфейсе Tunnel 0 применить настройки IpSec 2 фазы
+         int Tun 0
+         tunnel protection ipsec profile IPsec
 
   4. На R18 добавить команду для создания мини-туннеля 1 фазы
   
