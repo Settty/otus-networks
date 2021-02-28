@@ -152,3 +152,21 @@ IPSec over DmVPN
 
           interface Tunnel0
           tunnel protection ipsec profile IPSec
+          
+   3. На роутерах R14 и R15 ввести команды для организации мини-туннеля 1 фазы
+
+   На R14 
+      
+    crypto isakmp key 123456 address 120.120.120.2 - для Лабытнаги
+    crypto isakmp key 123456 address 130.130.130.2 - для Чокурдах
+    
+   На R15 
+      
+    crypto isakmp key 12345 address 120.120.120.2 - для Лабытнаги
+    crypto isakmp key 12345 address 130.130.130.2 - для Чокурдах 
+    
+   После введенных настроек на R27 и R28 создался туннель DMVPN защищенный IPSec 
+   
+   ![](R27.png) 
+   
+   ![](R28.png) 
