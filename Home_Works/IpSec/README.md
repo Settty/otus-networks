@@ -96,6 +96,8 @@ IPSec over DmVPN
   4. На R18 добавить команду для создания мини-туннеля 1 фазы
   
          crypto isakmp key 123456 address 100.100.20.14 - ip адрес R14. Пароль 123456 - это пароль который был описан в самом начале ДЗ
+         
+   ![](cryptoR18_1.png) 
   
   5. На роутере R18 настроить интерфейс Tunnel 1 (это второй туннель на этом роутере для GRE между R18 и R14).
   Настройки GRE over IPSec сводятся лишь к тому, что необходимо добавить в интерфей Tunnel 1 профиль IPSec  
@@ -104,7 +106,7 @@ IPSec over DmVPN
          tunnel protection ipsec profile IPSec
          
          
-   ![](pingVPC8.png) 
+   ![](cryptoR18.png) 
    
    
    
