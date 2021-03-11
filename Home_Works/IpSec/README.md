@@ -192,7 +192,7 @@ IPSec over DmVPN
        no shutdown - включаем сервем CA
        
        crypto pki trustpoint R19_CA - trustpoint создаетcя автоматически, но так же trustpoint можно настроить дополнительно при выключенном сервере CA
-       revocation-check none
+       revocation-check none - команда для обращения к списку crl файла для отозванных сертификатов. В данном случае не обрашаться т.к. NONE!!!
        rsakeypair R19_CA - подключается пара ключей созданная ранее (label R19_CA)
        
    ![](R19_CA.png)
