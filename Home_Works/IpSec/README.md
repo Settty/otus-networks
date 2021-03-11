@@ -181,11 +181,12 @@ IPSec over DmVPN
  2. Далее в качестве сервера CA будет использован роутер R19 c loopback адресом 19.19.19.19.
   Для настройки роутера R19 в качестве сервера CA необходимо выполнить:
   
-       ip domain-name otus.ru - команда задает имя домена
-       ip http server - включаем протокол http. Необходим для передачи закрытого ключа по протоколу SCEP
-       crypto key generate rsageneral-keys label R19_CA modulus 2048 - команда создает пару открытого и закрытого ключа для сервера CA с названием R19_CA
+        ip domain-name otus.ru - команда задает имя домена
+        ip http server - включаем протокол http. Необходим для передачи закрытого ключа по протоколу SCEP
+        crypto key generate rsageneral-keys label R19_CA modulus 2048 - команда создает пару открытого и закрытого ключа для сервера CA с названием R19_CA
        
-       Далее заходим в настройку сервера CA
+   Далее заходим в настройку сервера CA
+       
        crypto pki server R19_CA
        database level complete - команда для ведения полной базы по выданным сертификатам
        no shutdown - включаем сервем CA
