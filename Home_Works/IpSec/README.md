@@ -184,7 +184,10 @@ IPSec over DmVPN
         ip domain-name otus.ru - команда задает имя домена
         ip http server - включаем протокол http. Необходим для передачи закрытого ключа по протоколу SCEP
         crypto key generate rsa general-keys label R19_CA modulus 2048 - команда создает пару открытого и закрытого ключа для сервера CA с названием R19_CA
+        
        
+  ![](R19_key.png)
+  
    Далее заходим в настройку сервера CA
        
        crypto pki server R19_CA
