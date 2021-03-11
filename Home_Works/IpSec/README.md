@@ -193,6 +193,7 @@ IPSec over DmVPN
        crypto pki server R19_CA
        database level complete - команда для ведения полной базы по выданным сертификатам
        no shutdown - включаем сервем CA
+       no grant auto - запрещаем автоматическую выдачу запрашиваемых сертификатов. Будем выдавать вручную.
        
        crypto pki trustpoint R19_CA - trustpoint создаетcя автоматически, но так же trustpoint можно настроить дополнительно при выключенном сервере CA
        revocation-check none - команда для обращения к списку crl файла для отозванных сертификатов. В данном случае не обрашаться т.к. NONE!!!
