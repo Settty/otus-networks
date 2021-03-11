@@ -183,7 +183,7 @@ IPSec over DmVPN
   
         ip domain-name otus.ru - команда задает имя домена
         ip http server - включаем протокол http. Необходим для передачи закрытого ключа по протоколу SCEP
-        crypto key generate rsageneral-keys label R19_CA modulus 2048 - команда создает пару открытого и закрытого ключа для сервера CA с названием R19_CA
+        crypto key generate rsa general-keys label R19_CA modulus 2048 - команда создает пару открытого и закрытого ключа для сервера CA с названием R19_CA
        
    Далее заходим в настройку сервера CA
        
@@ -204,3 +204,18 @@ IPSec over DmVPN
           Чокурдах - R28
           Лабытнаги - R27
    
+          ip domain-name otus.ru
+          crypto key generate rsa label VPN modulus 2048
+          
+          crypto pki trustpoint VPN_OTUS
+          enrollment url http://19.19.19.19
+          fqdn RX.otus.ru - создать полное имя RX - где X номер маршрутизатора
+          subject-name CN=RX,OU=VPN,O=OTUS,C=RU
+          revocation-check none
+          rsakeypair VPN
+          
+          crypto pki authenticate VPN_OTUS
+          crypto pki enroll VPN_OTUS
+          
+       После введенных настроек на роутерах необходимо на сервере сертификации разрешить выдачу запрашиваемых сертифкатов
+       
