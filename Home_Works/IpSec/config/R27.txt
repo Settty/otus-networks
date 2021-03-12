@@ -1,0 +1,194 @@
+
+!
+! Last configuration change at 17:06:46 MSK Thu Mar 11 2021
+! NVRAM config last updated at 10:22:38 MSK Fri Mar 12 2021
+! NVRAM config last updated at 10:22:38 MSK Fri Mar 12 2021
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R27
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone MSK 3 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name otus.ru
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint VPN_OTUS
+ enrollment url http://19.19.19.19:80
+ fqdn R27_[].otus.ru
+ subject-name CN=R27_[],OU=VPN,O=OTUS,C=RU
+ revocation-check none
+ rsakeypair VPN
+!
+!
+crypto pki certificate chain VPN_OTUS
+ certificate 0A nvram:R19_CA#A.cer
+ certificate ca 01 nvram:R19_CA#1CA.cer
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+crypto isakmp policy 1
+ encr aes
+ hash sha256
+ group 14
+ lifetime 3600
+crypto isakmp key 123456 address 100.100.20.14  
+crypto isakmp key 12345 address 100.100.20.15  
+crypto isakmp keepalive 10 periodic
+!
+!
+crypto ipsec transform-set IPSec esp-aes esp-sha-hmac 
+ mode transport
+!
+crypto ipsec profile IPSec
+ set transform-set IPSec 
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 27.27.27.27 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Tunnel0
+ no shutdown
+ ip address 172.16.10.2 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 172.16.10.20 100.100.20.14
+ ip nhrp map multicast 100.100.20.14
+ ip nhrp map 172.16.10.1 100.100.20.15
+ ip nhrp map multicast 100.100.20.15
+ ip nhrp network-id 1
+ ip nhrp nhs 172.16.10.1
+ ip nhrp nhs 172.16.10.20
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ ip ospf 1 area 0
+ tunnel source Ethernet0/0
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile IPSec
+!
+interface Tunnel1
+ no shutdown
+ no ip address
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 120.120.120.2 255.255.255.240
+ ipv6 address FE80::27 link-local
+ ipv6 address 20AA:BBCC:120:120::2/64
+!
+interface Ethernet0/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 27.27.27.27
+ neighbor 172.16.10.20 cost 2000
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 120.120.120.1
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input all
+!
+ntp source Loopback0
+ntp server 12.12.12.12 prefer
+ntp server 13.13.13.13
+!
+end
