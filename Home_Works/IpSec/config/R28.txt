@@ -1,0 +1,246 @@
+
+!
+! Last configuration change at 17:05:38 MSK Thu Mar 11 2021
+! NVRAM config last updated at 10:22:36 MSK Fri Mar 12 2021
+! NVRAM config last updated at 10:22:36 MSK Fri Mar 12 2021
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R28
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone MSK 3 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name otus.ru
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint VPN_OTUS
+ enrollment url http://19.19.19.19:80
+ fqdn R28_[].otus.ru
+ subject-name CN=R28_[],OU=VPN,O=OTUS,C=RU
+ revocation-check none
+ rsakeypair VPN
+!
+!
+crypto pki certificate chain VPN_OTUS
+ certificate 09 nvram:R19_CA#9.cer
+ certificate ca 01 nvram:R19_CA#1CA.cer
+!
+redundancy
+!
+!
+!
+track 1 ip sla 1 reachability
+! 
+!
+!
+!
+!
+crypto isakmp policy 1
+ encr aes
+ hash sha256
+ group 14
+ lifetime 3600
+crypto isakmp key 123456 address 100.100.20.14  
+crypto isakmp key 12345 address 100.100.20.15  
+crypto isakmp keepalive 10 periodic
+!
+!
+crypto ipsec transform-set IPSec esp-aes esp-sha-hmac 
+ mode transport
+!
+crypto ipsec profile IPSec
+ set transform-set IPSec 
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 28.28.28.28 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Loopback1
+ no shutdown
+ no ip address
+!
+interface Tunnel0
+ no shutdown
+ ip address 172.16.10.3 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 172.16.10.20 100.100.20.14
+ ip nhrp map multicast 100.100.20.14
+ ip nhrp map 172.16.10.1 100.100.20.15
+ ip nhrp map multicast 100.100.20.15
+ ip nhrp network-id 1
+ ip nhrp nhs 172.16.10.1
+ ip nhrp nhs 172.16.10.20
+ ip nhrp registration timeout 10
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ ip ospf network point-to-multipoint
+ ip ospf 1 area 0
+ tunnel source Ethernet0/1
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile IPSec
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 140.140.140.2 255.255.255.240
+ ip nat outside
+ ip virtual-reassembly in
+ ipv6 address FE80::28 link-local
+ ipv6 address 20AA:BBCC:140:140::2/64
+ ipv6 enable
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 130.130.130.3 255.255.255.240 secondary
+ ip address 130.130.130.2 255.255.255.240
+ ip nat outside
+ ip virtual-reassembly in
+ ipv6 address FE80::28 link-local
+ ipv6 address 20AA:BBCC:130:130::2/64
+ ipv6 enable
+!
+interface Ethernet0/2
+ no shutdown
+ no ip address
+!
+interface Ethernet0/2.60
+ no shutdown
+ encapsulation dot1Q 60
+ ip address 192.168.60.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+!
+interface Ethernet0/2.70
+ no shutdown
+ encapsulation dot1Q 70
+ ip address 192.168.70.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 28.28.28.28
+ neighbor 172.16.10.20 cost 2000
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip nat pool NAT_130 130.130.130.3 130.130.130.3 netmask 255.255.255.240
+ip nat pool NAT_140 140.140.140.2 140.140.140.2 netmask 255.255.255.240
+ip nat inside source list 10 pool NAT_130 overload
+ip route 0.0.0.0 0.0.0.0 130.130.130.1 track 1
+ip route 0.0.0.0 0.0.0.0 140.140.140.1 20
+!
+ip sla auto discovery
+ip sla 1
+ icmp-echo 130.130.130.1 source-ip 130.130.130.2
+ frequency 5
+ip sla schedule 1 life forever start-time now
+access-list 10 permit 192.168.0.0 0.0.255.255
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input all
+!
+ntp source Loopback0
+ntp server 12.12.12.12 prefer
+ntp server 13.13.13.13
+event manager applet NAT_130_DOWN
+ event syslog pattern "%TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down"
+ action 1.1 cli command "enable"
+ action 1.2 cli command "clear ip nat tr *"
+ action 1.3 cli command "configure terminal"
+ action 1.4 cli command "no ip nat inside source list 10 pool NAT_130 overload"
+ action 1.5 cli command "ip nat inside source list 10 pool NAT_140 overload"
+ action 1.6 cli command "end"
+event manager applet NAT_130_UP
+ event syslog pattern "%TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up"
+ action 1.1 cli command "enable"
+ action 1.2 cli command "clear ip nat tr *"
+ action 1.3 cli command "configure terminal"
+ action 1.4 cli command "no ip nat inside source list 10 pool NAT_140 overload"
+ action 1.5 cli command "ip nat inside source list 10 pool NAT_130 overload"
+ action 1.6 cli command "end"
+!
+end
