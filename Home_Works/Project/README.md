@@ -197,5 +197,12 @@ R1 и R2 были выбраны в качестве Hub маршрутизат�
     ip tcp adjust-mss 1360
     tunnel source Ethernet0/0
     tunnel mode gre multipoint
-    tunnel mode gre multipoint
+    tunnel path-mtu-discovery
+    
+ После выполнения данных настроек на Hub_1 и Hub_2 появились динамические записи в таблице NHRP 
+ 
+ ![](R1_1.png)
+ 
+ ![](R2_1.png)
+    
  
