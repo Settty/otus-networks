@@ -325,3 +325,73 @@ R1 и R2 были выбраны в качестве Hub маршрутизат�
  
  
  ### Далее приступим к настройке следущего удаленного офиса Spoke_2, который находится за PAT.
+ 
+ ![](PAT.png)
+ 
+ На схеме выше офис Spoke_2 получает IP адрес по DHCP от роутера R8 из диапозона серых адресов 172.16.0.0 /24. Cоответсвтенно офисные подсети будут выходить в Интернет через NAT(PAT). Т.е. Spoke_2 сам находится за PAT. При настройке DMVPN маршрутизатора находящегося за PAT Hub не сможет утсановить связь со Spoke т.к. NHRP пакеты не смогут пройти через PAT без защиты IPSec. Проблема состоит в том, что NHRP пакет вкладывается в GRE, а GRE вкладывается в IP пакет. Т.е. IP пакет не имеет заголовка транспортного уровня и PAT не может правильно сопоставить поток трафика между Hub и Spoke. Для решения этой проблемы помогют протоколы IPSec. При включении IPSec включается механизм **NAT Traversal**. То есть при включении IPSec в пакете между заголовком нового IP и заголовком ESP вставляется заголовок UDP c портом 4500.
+ 
+ ![](Nat-t.png)
+ 
+ Настройка на Spoke_2 аналочина как на Spoke_1 и отличным адресом туннельного интерфейса.
+ 
+    interface Tunnel1
+    ip address 172.16.100.3 255.255.255.0
+    ip mtu 1400
+    ip nhrp map 172.16.100.1 100.100.100.1
+    ip nhrp network-id 100
+    ip nhrp nhs 172.16.100.1
+    ip nhrp registration timeout 30
+    ip nhrp shortcut
+    ip tcp adjust-mss 1360
+    tunnel source Ethernet0/1
+    tunnel mode gre multipoint
+    tunnel path-mtu-discovery
+    tunnel protection ipsec profile IPSec shared
+    
+    
+    interface Tunnel2
+    ip address 172.16.200.3 255.255.255.0
+    ip mtu 1400
+    ip nhrp map 172.16.200.1 100.100.100.2
+    ip nhrp network-id 200
+    ip nhrp nhs 172.16.200.1
+    ip nhrp registration timeout 30
+    ip nhrp shortcut
+    ip tcp adjust-mss 1360
+    tunnel source Ethernet0/1
+    tunnel mode gre multipoint
+    tunnel path-mtu-discovery
+    tunnel protection ipsec profile IPSec shared
+    
+Далее настраиваем BGP 
+
+    router bgp 60200
+    bgp log-neighbor-changes
+    network 192.168.50.0
+    network 192.168.60.0
+    timers bgp 10 30
+    neighbor 172.16.100.1 remote-as 60100
+    neighbor 172.16.100.1 allowas-in
+    neighbor 172.16.200.1 remote-as 60100
+    neighbor 172.16.200.1 allowas-in
+    
+ Далее протокол IPSec
+ 
+    1 Фаза
+    crypto isakmp policy 1
+    encr aes 
+    authentication pre-share
+    group 14 
+    crypto isakmp key 12345 address 100.100.100.1  
+    crypto isakmp key 12345 address 100.100.100.2  
+    crypto isakmp keepalive 15 periodic
+    
+    2 Фаза
+    crypto ipsec transform-set IPSec esp-aes esp-sha-hmac 
+    mode transport
+         
+    Профиль IPsec
+    crypto ipsec profile IPSec
+    set transform-set IPSec 
+    
+ После выполнения данных настроек в таблице NAT маршрутизатора R8 через NAT которого выходит Spoke_2  появляется соответсвующая запись
