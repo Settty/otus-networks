@@ -1,0 +1,150 @@
+
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Router
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+cts logging verbose
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 3.3.3.3 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Loopback1
+ no shutdown
+ ip address 100.100.100.3 255.255.255.255
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 10.0.0.1 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 10.0.0.14 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/2
+ no shutdown
+ ip address 3.5.3.3 255.255.255.0
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 3.3.3.3
+ default-information originate always metric 20
+!
+router bgp 34
+ bgp log-neighbor-changes
+ network 100.100.100.0 mask 255.255.255.0
+ network 100.100.100.3 mask 255.255.255.255
+ timers bgp 10 30
+ neighbor 3.5.3.5 remote-as 5
+ neighbor 3.5.3.5 route-map AS60100 out
+ neighbor 10.0.0.2 remote-as 34
+ neighbor 10.0.0.2 next-hop-self
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 100.100.100.0 255.255.255.0 Null0
+!
+!
+ip prefix-list AS60100 seq 5 permit 100.100.100.0/24
+!
+route-map AS60100 permit 10
+ match ip address prefix-list AS60100
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
